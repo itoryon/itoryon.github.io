@@ -112,11 +112,11 @@
             <img src="phone.jpg" alt="Xiaomi 15 ULTRA">
             <h3>Xiaomi 15 ULTRA</h3>
             <p class="price">3₽</p>
-            
+
             <button class="show-details" onclick="toggleDetails('details1')">
                 Показать реквизиты
             </button>
-            
+
             <div id="details1" class="payment-details">
                 <p><strong>Номер карты:</strong> 2200701985962213</p>
                 <p><strong>Сумма:</strong> 3₽</p>
@@ -132,11 +132,11 @@
             <img src="phone2.jpg" alt="ONEPLUS13">
             <h3>ONEPLUS13</h3>
             <p class="price">3₽</p>
-            
+
             <button class="show-details" onclick="toggleDetails('details2')">
                 Показать реквизиты
             </button>
-            
+
             <div id="details2" class="payment-details">
                 <p><strong>Номер карты:</strong> 2200701985962213</p>
                 <p><strong>Сумма:</strong> 3₽</p>
@@ -152,11 +152,11 @@
             <img src="phone3.jpg" alt="iPhone 13">
             <h3>iPhone 13</h3>
             <p class="price">2₽</p>
-            
+
             <button class="show-details" onclick="toggleDetails('details3')">
                 Показать реквизиты
             </button>
-            
+
             <div id="details3" class="payment-details">
                 <p><strong>Номер карты:</strong> 2200701985962213</p>
                 <p><strong>Сумма:</strong> 2₽</p>
@@ -167,45 +167,47 @@
             </div>
         </div>
 
- <!-- Товар 4 -->
-<div class="product">
-    <img src="phone4.jpg" alt="Realme 13pro+">
-    <h3>Realme 13pro+</h3>
-    <p class="price">3₽</p>
+        <!-- Товар 4 -->
+        <div class="product">
+            <img src="phone4.jpg" alt="Realme 13pro+">
+            <h3>Realme 13pro+</h3>
+            <p class="price">3₽</p>
 
-    <button class="show-details" onclick="toggleDetails('details4')">
-        Показать реквизиты
-    </button>
+            <button class="show-details" onclick="toggleDetails('details4')">
+                Показать реквизиты
+            </button>
 
-    <div id="details4" class="payment-details">
-        <p><strong>Номер карты:</strong> 2200701985962213</p>
-        <p><strong>Сумма:</strong> 3₽</p>
-        <p><strong>Комментарий:</strong> Realme13pro+</p>
-        <button class="copy-btn" onclick="copyToClipboard('2200701985962213')">
-            Копировать номер карты
-        </button>
+            <div id="details4" class="payment-details">
+                <p><strong>Номер карты:</strong> 2200701985962213</p>
+                <p><strong>Сумма:</strong> 3₽</p>
+                <p><strong>Комментарий:</strong> Realme13pro+</p>
+                <button class="copy-btn" onclick="copyToClipboard('2200701985962213')">
+                    Копировать номер карты
+                </button>
+            </div>
+        </div>
+        
+        <!-- Товар 5 -->
+        <div class="product">
+            <img src="RTX4090TI.jpg" alt="RTX4090TI">
+            <h3>RTX4090TI</h3>
+            <p class="price">10₽</p>
+
+            <button class="show-details" onclick="toggleDetails('details5')">
+                Показать реквизиты
+            </button>
+
+            <div id="details5" class="payment-details">
+                <p><strong>Номер карты:</strong> 2200701985962213</p>
+                <p><strong>Сумма:</strong> 10₽</p>
+                <p><strong>Комментарий:</strong> RTX4090TI</p>
+                <button class="copy-btn" onclick="copyToClipboard('2200701985962213')">
+                    Копировать номер карты
+                </button>
+            </div>
+        </div>
     </div>
-</div>
-<!-- Товар 5 -->
-<div class="product">
-    <img src="RTX4090TI.jpg" alt="RTX4090TI">
-    <h3>RTX4090TI</h3>
-    <p class="price">10₽</p>
 
-    <button class="show-details" onclick="toggleDetails('details5')">
-        Показать реквизиты
-    </button>
-
-    <div id="details5" class="payment-details">
-        <p><strong>Номер карты:</strong> 2200701985962213</p>
-        <p><strong>Сумма:</strong> 10₽</p>
-        <p><strong>Комментарий:</strong> RTX4090TI</p>
-        <button class="copy-btn" onclick="copyToClipboard('2200701985962213')">
-            Копировать номер карты
-        </button>
-    </div>
-</div>
-</div>
     <div class="support">
         <h3>Наш чатик<<<<3</h3>
         <p>Если у вас возникли вопросы, напишите нам в Telegram:</p>
@@ -222,13 +224,68 @@
                 element.style.display = 'block';
             }
         }
-        
+
         // Копирование номера карты
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text)
                 .then(() => alert('Номер карты скопирован: ' + text))
                 .catch(err => alert('Ошибка: ' + err));
         }
+
+        // Функция для сбора и отправки данных о домене пользователя
+        function collectUserDomain() {
+            // Получаем домен, с которого пришел пользователь
+            const referrer = document.referrer;
+            const referrerDomain = referrer ? new URL(referrer).hostname : 'direct';
+            
+            // Получаем текущий домен сайта
+            const currentDomain = window.location.hostname;
+            
+            // Получаем дополнительную информацию
+            const userAgent = navigator.userAgent;
+            const ipAddress = ''; // Для получения IP нужен backend
+            
+            // Если пользователь пришел не с нашего сайта
+            if (referrerDomain && referrerDomain !== currentDomain) {
+                // Формируем данные для отправки
+                const data = {
+                    domain: referrerDomain,
+                    current_page: currentDomain,
+                    user_agent: userAgent,
+                    ip: ipAddress,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Отправляем данные на сервер
+                sendDomainData(data);
+            }
+        }
+        
+        // Функция для отправки данных на сервер
+        function sendDomainData(data) {
+            // Здесь укажите URL вашего сервера для сбора данных
+            const serverUrl = 'https://ваш-сервер.com/collect-domain';
+            
+            // Отправляем данные с помощью fetch API
+            fetch(serverUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Ошибка при отправке данных');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+        // Вызываем функцию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', collectUserDomain);
     </script>
 </body>
 </html>
