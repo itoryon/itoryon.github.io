@@ -29,7 +29,7 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 15px;
-            width: 200px;
+            width: 250px;  /* Увеличил ширину для кнопок */
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
@@ -49,17 +49,39 @@
             font-weight: bold;
             font-size: 18px;
         }
-        button {
-            background: #0066cc;
+        .payment-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .payment-btn {
+            background: #28a745;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 8px;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
+            text-decoration: none;
+            font-size: 14px;
         }
-        button:hover {
-            background: #0055aa;
+        .payment-btn:hover {
+            opacity: 0.9;
+        }
+        .copy-btn {
+            background: #ffc107;
+            color: #000;
+        }
+        .qr-btn {
+            background: #17a2b8;
+        }
+        .payment-details {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -72,10 +94,42 @@
     <div class="products">
         <!-- Товар 1 -->
         <div class="product">
-            <img src="phone.jpg" alt=" Xiaomi 15 ULTRA">
+            <img src="phone.jpg" alt="Xiaomi 15 ULTRA">
             <h3>Xiaomi 15 ULTRA</h3>
             <p>200₽</p>
-            <button>buy</button>
+            
+            <div class="payment-buttons">
+                <!-- Кнопка перевода по номеру карты -->
+                <a href="https://qr.nspk.ru/proxy?cardNumber=2200701985962213&sum=200&comment=Xiaomi15ULTRA" 
+                   class="payment-btn" target="_blank">
+                    Оплатить через банк
+                </a>
+                
+                <!-- Кнопка для показа реквизитов -->
+                <button class="payment-btn copy-btn" onclick="toggleDetails('details1')">
+                    Показать реквизиты
+                </button>
+                
+                <!-- Скрытый блок с реквизитами -->
+                <div id="details1" class="payment-details">
+                    <p><strong>Номер карты:</strong> 2200701985962213</p>
+                    <p><strong>Сумма:</strong> 200₽</p>
+                    <p><strong>Комментарий:</strong> Xiaomi15ULTRA</p>
+                    <button onclick="copyToClipboard('2200701985962213')">Копировать номер</button>
+                </div>
+                
+                <!-- Кнопка для QR-кода -->
+                <button class="payment-btn qr-btn" onclick="toggleDetails('qr1')">
+                    Показать QR-код
+                </button>
+                
+                <!-- Скрытый блок с QR-кодом -->
+                <div id="qr1" class="payment-details" style="text-align: center;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qr.nspk.ru/proxy?cardNumber=2200701985962213&sum=200&comment=Xiaomi15ULTRA" 
+                         alt="QR-код для оплаты">
+                    <p>Отсканируйте QR-код в приложении банка</p>
+                </div>
+            </div>
         </div>
 
         <!-- Товар 2 -->
@@ -83,16 +137,81 @@
             <img src="phone2.jpg" alt="ONEPLUS13">
             <h3>ONEPLUS13</h3>
             <p>90₽</p>
-            <button>buy</button>
+            
+            <div class="payment-buttons">
+                <a href="https://qr.nspk.ru/proxy?cardNumber=2200701985962213&sum=90&comment=ONEPLUS13" 
+                   class="payment-btn" target="_blank">
+                    Оплатить через банк
+                </a>
+                <button class="payment-btn copy-btn" onclick="toggleDetails('details2')">
+                    Показать реквизиты
+                </button>
+                <div id="details2" class="payment-details">
+                    <p><strong>Номер карты:</strong> 2200701985962213</p>
+                    <p><strong>Сумма:</strong> 90₽</p>
+                    <p><strong>Комментарий:</strong> ONEPLUS13</p>
+                    <button onclick="copyToClipboard('2200701985962213')">Копировать номер</button>
+                </div>
+                <button class="payment-btn qr-btn" onclick="toggleDetails('qr2')">
+                    Показать QR-код
+                </button>
+                <div id="qr2" class="payment-details" style="text-align: center;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qr.nspk.ru/proxy?cardNumber=2200701985962213&sum=90&comment=ONEPLUS13" 
+                         alt="QR-код для оплаты">
+                    <p>Отсканируйте QR-код в приложении банка</p>
+                </div>
+            </div>
         </div>
 
         <!-- Товар 3 -->
         <div class="product">
-            <img src="phone3.jpg" alt="phone iPhone">
+            <img src="phone3.jpg" alt="iPhone 13">
             <h3>iPhone 13</h3>
             <p>10₽</p>
-            <button>buy</button>
+            
+            <div class="payment-buttons">
+                <a href="https://qr.nspk.ru/proxy?cardNumber=2200701985962213&sum=10&comment=iPhone13" 
+                   class="payment-btn" target="_blank">
+                    Оплатить через банк
+                </a>
+                <button class="payment-btn copy-btn" onclick="toggleDetails('details3')">
+                    Показать реквизиты
+                </button>
+                <div id="details3" class="payment-details">
+                    <p><strong>Номер карты:</strong> 2200701985962213</p>
+                    <p><strong>Сумма:</strong> 10₽</p>
+                    <p><strong>Комментарий:</strong> iPhone13</p>
+                    <button onclick="copyToClipboard('2200701985962213')">Копировать номер</button>
+                </div>
+                <button class="payment-btn qr-btn" onclick="toggleDetails('qr3')">
+                    Показать QR-код
+                </button>
+                <div id="qr3" class="payment-details" style="text-align: center;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qr.nspk.ru/proxy?cardNumber=2200701985962213&sum=10&comment=iPhone13" 
+                         alt="QR-код для оплаты">
+                    <p>Отсканируйте QR-код в приложении банка</p>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Показать/скрыть детали оплаты
+        function toggleDetails(id) {
+            const element = document.getElementById(id);
+            if (element.style.display === 'block') {
+                element.style.display = 'none';
+            } else {
+                element.style.display = 'block';
+            }
+        }
+        
+        // Копирование номера карты
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => alert('Номер карты скопирован: ' + text))
+                .catch(err => alert('Ошибка: ' + err));
+        }
+    </script>
 </body>
 </html>
