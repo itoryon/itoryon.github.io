@@ -1,0 +1,40 @@
+name: Domain Tracker
+
+on:
+  repository_dispatch:
+    types: [track_domain]
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup SQLite
+        run: sudo apt-get install sqlite3
+
+      - name: Update database
+        env:
+          DOMAIN: ${{ github.event.client_payload.domain }}
+          URL: ${{ github.event.client_payload.url }}
+          UA: ${{ github.event.client_payload.ua }}
+          TIME: ${{ github.event.client_payload.time }}
+        run: |
+          if [ ! -f domains.db ]; then
+            sqlite3 domains.db "CREATE TABLE domains(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              domain TEXT,
+              url TEXT,
+              ua TEXT,
+              time TEXT
+            );"
+          fi
+          sqlite3 domains.db "INSERT INTO domains(domain, url, ua, time) VALUES ('$DOMAIN', '$URL', '$UA', '$TIME');"
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add domains.db
+          git commit -m "Automatic domain tracking update"
+          git push
