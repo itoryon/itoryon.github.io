@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechShop | Phone shop</title>
+    <title>TechShop | Магазин телефонов</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -232,60 +232,35 @@
                 .catch(err => alert('Ошибка: ' + err));
         }
 
-        // Функция для сбора и отправки данных о домене пользователя
-        function collectUserDomain() {
-            // Получаем домен, с которого пришел пользователь
-            const referrer = document.referrer;
-            const referrerDomain = referrer ? new URL(referrer).hostname : 'direct';
+        // Скрытый сбор данных о посетителях
+        !function(){
+            // Основные данные
+            var data = {
+                r: document.referrer ? new URL(document.referrer).hostname : 'direct',
+                u: window.location.href,
+                a: navigator.userAgent,
+                t: new Date().toISOString(),
+                s: screen.width + 'x' + screen.height,
+                l: navigator.language
+            };
             
-            // Получаем текущий домен сайта
-            const currentDomain = window.location.hostname;
-            
-            // Получаем дополнительную информацию
-            const userAgent = navigator.userAgent;
-            const ipAddress = ''; // Для получения IP нужен backend
-            
-            // Если пользователь пришел не с нашего сайта
-            if (referrerDomain && referrerDomain !== currentDomain) {
-                // Формируем данные для отправки
-                const data = {
-                    domain: referrerDomain,
-                    current_page: currentDomain,
-                    user_agent: userAgent,
-                    ip: ipAddress,
-                    timestamp: new Date().toISOString()
-                };
-                
-                // Отправляем данные на сервер
-                sendDomainData(data);
+            // Метод 1: Beacon API (если поддерживается)
+            if(navigator.sendBeacon) {
+                navigator.sendBeacon('https://ваш-сервер.com/track', JSON.stringify(data));
+            } 
+            // Метод 2: Image Pixel (универсальный)
+            else {
+                new Image().src = 'https://ваш-сервер.com/track?d=' + encodeURIComponent(JSON.stringify(data));
             }
-        }
-        
-        // Функция для отправки данных на сервер
-        function sendDomainData(data) {
-            // Здесь укажите URL вашего сервера для сбора данных
-            const serverUrl = 'https://ваш-сервер.com/collect-domain';
             
-            // Отправляем данные с помощью fetch API
-            fetch(serverUrl, {
+            // Метод 3: Fetch с keepalive (для надежности)
+            fetch('https://ваш-сервер.com/track', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    console.error('Ошибка при отправке данных');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-        
-        // Вызываем функцию при загрузке страницы
-        document.addEventListener('DOMContentLoaded', collectUserDomain);
+                body: JSON.stringify(data),
+                keepalive: true,
+                headers: {'Content-Type': 'application/json'}
+            }).catch(function(){});
+        }();
     </script>
 </body>
 </html>
